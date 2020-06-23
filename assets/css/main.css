@@ -4162,3 +4162,11 @@ input, select, textarea {
 		
 		border-radius: 10%;
 	}
+	#profile{
+		width: 500px;
+		position: relative;
+		margin-left:50%;
+	}
+	.Project{
+		width: 90%;
+	}

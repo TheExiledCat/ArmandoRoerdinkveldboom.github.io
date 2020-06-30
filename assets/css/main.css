@@ -4170,3 +4170,6 @@ input, select, textarea {
 	.Project{
 		width: 90%;
 	}
+	.checked{
+		color:black;
+	}

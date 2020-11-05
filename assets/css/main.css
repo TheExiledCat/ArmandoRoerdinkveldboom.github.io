@@ -4195,7 +4195,7 @@ input, select, textarea {
   width: auto;
   margin-top: -22px;
   padding: 16px;
-  color: white;
+  color: rgba(255, 255, 255,255);
   font-weight: bold;
   font-size: 18px;
   transition: 0.6s ease;

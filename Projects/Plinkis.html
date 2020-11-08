@@ -49,22 +49,27 @@
 
 										<!-- Full-width images with number and caption text -->
 										<div class="mySlides fade">
-										  <div class="numbertext">1 / 3</div>
+										  <div class="numbertext">1 / 4</div>
 										  <img src="../images/Plinkis.PNG" style="width:100%">
 										  <div class="text">Tetris aspect</div>
 										</div>
 									  
 										<div class="mySlides fade">
-										  <div class="numbertext">2 / 3</div>
+										  <div class="numbertext">2 / 4</div>
 										  <img src="../images/Plinkis1.PNG" style="width:100%">
 										  <div class="text">Plinko Aspect</div>
 										</div>
 									  
 										<div class="mySlides fade">
-										  <div class="numbertext">3 / 3</div>
+										  <div class="numbertext">3 / 4</div>
 										  <img src="../images/Plinkis2.PNG" style="width:100%">
 										  <div class="text">Unity Aspect</div>
 										</div>
+										<div class="mySlides fade">
+											<div class="numbertext">3 / 4</div>
+											<img src="../images/Plinkis3.PNG" style="width:100%">
+											<div class="text">Music production</div>
+										  </div>
 									  
 										<!-- Next and previous buttons -->
 										<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
@@ -77,11 +82,12 @@
 										<span class="dot" onclick="currentSlide(1)"></span>
 										<span class="dot" onclick="currentSlide(2)"></span>
 										<span class="dot" onclick="currentSlide(3)"></span>
+										<span class="dot" onclick="currentSlide(4)"></span>
 									  </div>
 								</article>
 								<p>Video of Project</p>
 								<article>
-									<video style="width:100%" src="../videos/2020-10-04 21-44-01.mp4" controls></video>
+									<video style="width:100%" src="../videos/Plinkis.mp4" controls></video>
 								</article>
 							</div>
 						</header>
@@ -90,12 +96,124 @@
 							<div class="wrapper">
 								<div class="inner">
 
+									
+									
 									<h3 class="major">About Plinkis</h3>
 									<p>A Tetris X Plinko Mashup game made for a school assignment in 2020. This was a game idea that looked really cool to me to show my ability to mix different types of games into one.
 										I Made this game on my own, including all art, Music and code. The game was made in Unity using the at that time new 2020 engine.</p>
 
 									
+										<h3 class="major">Code</h3>
+										<article>
+											<pre>
+												<code>
+													void Update()
+													{
+														//move once
+														if (Input.GetKeyDown(KeyCode.LeftArrow))
+														{
+															MoveX(false);
+															lastHorizontalTimer = Time.time;
+														}
+														else if (Input.GetKeyDown(KeyCode.RightArrow))
+														{
+															MoveX(true);
+															lastHorizontalTimer = Time.time;
+														}
 
+														//hold movement
+														if (Time.time - lastHorizontalTimer > horizontalTimer)
+														{
+															if (Input.GetKey(KeyCode.LeftArrow))
+															{
+																MoveX(false);
+																lastHorizontalTimer = Time.time;
+															}
+															else if (Input.GetKey(KeyCode.RightArrow))
+															{
+																MoveX(true);
+																lastHorizontalTimer = Time.time;
+															}
+														}
+
+														//gravity
+														if (Time.time - lastTimer > (Input.GetKey(KeyCode.DownArrow) ? autoFloatTimer /10: autoFloatTimer)){
+															MoveY(true);
+															lastTimer = Time.time;
+														}
+
+														//rotation
+														if (Input.GetKeyDown(KeyCode.UpArrow))
+														{
+															Rotate();
+														}
+
+														//hold
+														if (Input.GetKeyDown(KeyCode.Space))
+														{
+															if(!Field.Grid.hasHeld)
+																Destroy(gameObject);
+															OnHold?.Invoke(tetronimoID);
+															
+															
+														}
+													}
+												</code>
+											</pre>
+												
+											  <p>The code above is for the grid movement and gravity of the Tetronimos, this class controls all the movement and movement induced triggers in the tetronimo objects.
+												  Theres multiple timers counting down every second for gravity, but the timers can be sped up by for example holding down, to speed drop.
+											  </p>
+											  <pre>
+												<code>
+													void MoveX(bool right) // move in indicated direction
+													{
+														transform.position += right ? Vector3.right : Vector3.left;
+														if (CheckOutOfBounds())
+														{
+															transform.position += right ? Vector3.left : Vector3.right;
+														}
+													}
+												</code>
+											</pre>
+											  <p>called upon pressing one of the movement keys, moves the tetronimo one block to the left or right and then performs the following check:</p>
+											  <code>
+												bool CheckOutOfBounds()//check if tetronimo block is touching a wall or another tetronimo
+												{
+													foreach(Transform t in transform)
+													{
+														int x = Mathf.RoundToInt(t.position.x);
+														int y = Mathf.RoundToInt(t.position.y);
+														
+											
+														if (x <0 || x >= Field.Grid.width || y <0 || y >= Field.Grid.height)
+														{
+															return true;
+														}
+														if (Field.Grid.grid2D[x, y] != null)
+														{
+															return true;
+														}
+														
+													}
+													return false;
+												}
+											</code>
+											<p>This check uses the grid class singleton that is the playing field grid and checks if any blocks of the tetronimo are colliding with any, if so it returns true and makes the block move back to its initial position</p>
+											<code>
+												void MoveY(bool down)
+    											{
+       												 transform.position += down ? Vector3.down : Vector3.up;
+        												if (CheckOutOfBounds())
+        												{
+        												    transform.position += down ? Vector3.up : Vector3.down;
+        												    Lock();
+														
+        												}
+    											}
+											</code>
+											<p>similair to the previous moveX function but instead moves down by the constant gravity pulling it down, checks for collisions every time and if so, performs the lock function which turns off its movement and ads it to the grid</p>
+										</article>
 									<h3 class="major">Programs and languages used</h3>
 									<ul>
 										<li>Unity Engine</li>

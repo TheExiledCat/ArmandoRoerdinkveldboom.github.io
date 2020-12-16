@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<!--
+	Solid State by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Armandos portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Vector 3</a></h1>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<div class="inner">
+							<h2>Menu</h2>
+							<ul class="links">
+								<li><a href="../index.html">Home</a></li>
+								<li><a href="../About me.html">About Me</a></li>
+								<li><a href="../Projects.html">Projects</a></li>
+							</ul>
+							<a href="#" class="close">Close</a>
+						</div>
+					</nav>
+
+				<!-- Wrapper -->
+					<section id="wrapper">
+						<header>
+							<div class="inner">
+								<h2>Vector 3</h2>
+								<p>3D VR Synthwave Shooter in Unity</p>
+								<article>
+									<div class="slideshow-container">
+
+										<!-- Full-width images with number and caption text -->
+										<div class="mySlides fade">
+										  <div class="numbertext">1 / 6</div>
+										  <img src="../images/Vector.png" style="width:100%">
+										  <div class="text">Logo</div>
+										</div>
+									  
+										<div class="mySlides fade">
+										  <div class="numbertext">2 / 6</div>
+										  <img src="../images/Vector1.png" style="width:100%">
+										  <div class="text">Gameplay</div>
+										</div>
+									  
+										<div class="mySlides fade">
+										  <div class="numbertext">3 / 6</div>
+										  <img src="../images/Vector2.png" style="width:100%">
+										  <div class="text">Gameplay</div>
+										</div>
+										<div class="mySlides fade">
+											<div class="numbertext">4 / 6</div>
+											<img src="../images/Vector3.png" style="width:100%">
+											<div class="text">Gameplay</div>
+										  </div>
+										  <div class="mySlides fade">
+											<div class="numbertext">5 / 6</div>
+											<img src="../images/Vector4.png" style="width:100%">
+											<div class="text">Music Production</div>
+										  </div>
+										  <div class="mySlides fade">
+											<div class="numbertext">6 / 6</div>
+											<img src="../images/Vector5.png" style="width:100%">
+											<div class="text">Shader Creation</div>
+										  </div>
+										<!-- Next and previous buttons -->
+										<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+										<a class="next" onclick="plusSlides(1)">&#10095;</a>
+									  </div>
+									  <br>
+									  
+									  <!-- The dots/circles -->
+									  <div style="text-align:center">
+										<span class="dot" onclick="currentSlide(1)"></span>
+										<span class="dot" onclick="currentSlide(2)"></span>
+										<span class="dot" onclick="currentSlide(3)"></span>
+										<span class="dot" onclick="currentSlide(4)"></span>
+										<span class="dot" onclick="currentSlide(5)"></span>
+										<span class="dot" onclick="currentSlide(6)"></span>
+									  </div>
+								</article>
+								<p>Video of Project</p>
+								<article>
+									<video style="width:100%" src="../videos/Vector 3 Video.webm" controls></video>
+								</article>
+								
+							</div>
+						</header>
+
+						<!-- Content -->
+							<div class="wrapper">
+								<div class="inner">
+									
+									<h3 class="major">About Vector 3</h3>
+									<p>Vector 3 is a game made for the 2020 7DFPS Game Jam. It was made in 7 days in Unity and was made in a team of 3, 2 developers(including me) and an artist. In this project i made the majority of all the shaders, Code and AI. I also made the music. While the other developer focussed mainly on the VR aspects (of which i dont have a headset for). The Gameplay is a </p>
+
+									
+									<h3 class="major">Code</h3>
+									<article>
+										<p>Field of view script for the enemy AI, when the player is in direct line of sight of them and theres no walls obstructing them AND they are in range, it will activate the spotplayer function which calls a delegate in the next script, Enemy_Behaviour</p>
+									</article>
+										<pre>
+											
+											<code>
+												if (Physics.Raycast(transform.position, (p.transform.position+Vector3.up) - transform.position, out r, visionRange, Obstacles))
+												{
+										
+													if (r.collider.gameObject != p.gameObject)
+													{
+														obstructed = true;
+													}
+												}
+										
+										
+										
+												if (Vector3.Distance(transform.position, p.transform.position) < visionRange && obstructed == false)
+												{
+													vision = true;
+												}
+												if (vision && active)
+												{
+													SpotPlayer();
+												}
+											</code>
+										</pre>
+										<article>
+											<p>The Enemy_Behaviour script, responsible for sending the field of view data to the Enemy script, where it will be used to attack</p>
+										</article>
+											<pre>
+												
+												<code>
+													private void Start()
+    {
+        fov.OnSpot += InitiateChase;
+        e = GetComponent<Enemy>();
+    }
+    
+    void InitiateChase()
+    {
+        print("Initiating chase");
+        e.StartCombat(fov);
+    }
+												</code>
+											</pre>	  
+											<article>
+												<p>The Enemy Script, which branches into two other classes: EnemyMelee and EnemyGun respectively. In this script the enemy tries to attack the player activating ienumerators in the process. if the player gets too far away from the enemy the enemy will start to dash towards it to catch up. The EnemyGun and EnemyMelee scripts have overrides for the different kinds of attacks.</p>
+											</article>
+												<pre>
+													
+													<code>
+														if (active)
+        {
+            if (Vector3.Distance(transform.position, f.p.transform.position) > effectiveRange)
+            {
+                DashToTarget();
+            }
+            else
+            {
+                if (currentState == state.NEUTRAL)
+                {
+                    ChangeState(state.ATTACKING);
+                    Attack();
+                }
+                if (currentState == state.ATTACKING)
+                {
+                    Vector3 angle = f.p.transform.position - transform.position;
+
+
+                    Quaternion rot = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(angle), 10 * Time.deltaTime);
+
+                    transform.rotation = rot;
+                    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+                }
+           
+													</code>
+												</pre>
+									<h3 class="major">Programs and languages used</h3>
+									<ul>
+										<li>Unity Engine 2020</li>
+										<li>Maya AutoDesk</li>
+										<li>SteamVR</li>
+										<li>Photoshop</li>
+										<li>Reaper DAW</li>
+									</ul>
+									
+									
+									<a class="special" href="https://github.com/riccool5573/7DFPS" target="_blank">To Github Of Project</a>
+									<a class="special" href="https://riccool.itch.io/vector3" target="_blank">Download Game</a>
+								</div>
+							</div>
+
+					</section>
+
+				<!-- Footer -->
+					
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+			<script src="../assets/js/Project.js"></script>
+
+	</body>
+</html>

@@ -4282,3 +4282,9 @@ input, select, textarea {
 	
 	white-space: pre-line;
   }
+  .button#Browse{
+	  width: 850px;
+	  height: 200%;
+	  background-color: grey;
+	  
+  }

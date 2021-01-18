@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<!--
+	Solid State by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Armandos portfolio</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="../index.html">Helix Jump</a></h1>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<div class="inner">
+							<h2>Menu</h2>
+							<ul class="links">
+								<li><a href="../index.html">Home</a></li>
+								<li><a href="../About me.html">About Me</a></li>
+								<li><a href="../Projects.html">Projects</a></li>
+							</ul>
+							<a href="#" class="close">Close</a>
+						</div>
+					</nav>
+
+				<!-- Wrapper -->
+					<section id="wrapper">
+						<header>
+							<div class="inner">
+								<h2>Helix Jump</h2>
+								<p>Vertical slice style project of a challanging mobile game</p>
+								<article>
+									<div class="slideshow-container">
+
+										<!-- Full-width images with number and caption text -->
+										<div class="mySlides fade">
+										  <div class="numbertext">1 / 4</div>
+										  <img src="../images/Helix Jump1.PNG" style="width:100%">
+										  <div class="text">Level 1</div>
+										</div>
+									  
+										<div class="mySlides fade">
+										  <div class="numbertext">2 / 4</div>
+										  <img src="../images/Helix Jump2.PNG" style="width:100%">
+										  <div class="text">Level 2</div>
+										</div>
+									  
+										<div class="mySlides fade">
+										  <div class="numbertext">3 / 4</div>
+										  <img src="../images/Helix Jump3.PNG" style="width:100%">
+										  <div class="text">Level 3</div>
+										</div>
+										<div class="mySlides fade">
+											<div class="numbertext">4 / 4</div>
+											<img src="../images/Helix Jump4.PNG" style="width:100%">
+											<div class="text">Music Creation</div>
+										  </div>
+										<!-- Next and previous buttons -->
+										<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+										<a class="next" onclick="plusSlides(1)">&#10095;</a>
+									  </div>
+									  <br>
+									  
+									  <!-- The dots/circles -->
+									  <div style="text-align:center">
+										<span class="dot" onclick="currentSlide(1)"></span>
+										<span class="dot" onclick="currentSlide(2)"></span>
+										<span class="dot" onclick="currentSlide(3)"></span>
+										<span class="dot" onclick="currentSlide(4)"></span>
+									  </div>
+								</article>
+								<p>Video of Project</p>
+								<article>
+									<video style="width:100%" src="../videos/Helix Jump.mp4" controls></video>
+								</article>
+								
+							</div>
+						</header>
+
+						<!-- Content -->
+							<div class="wrapper">
+								<div class="inner">
+									
+									<h3 class="major">About Helix Jump</h3>
+									<p>Vertical Slice of a popular mobile game i made for an assignment for an intership. I made it alone in Unity without any outside assets and made a custom mesh renderer for the major gameplay parts. i made all the Code, Music and artistic elements myself. This was the first mobile game ive ever made and also the first game ive ever used custom meshes and file management in.</p>
+									<h3 class="major">Programs and languages used</h3>
+									<ul>
+										<li>Unity</li>
+										<li>Reaper</li>
+										<li>Audacity</li>
+									</ul>
+									
+									
+									<a class="special" href="https://github.com/TheExiledCat/Lucky-Kat-Assignment" target="_blank">To Github Of Project</a>
+									<a class="special" href="../Playables/Helix Jump/HelixFinal.apk" target="_blank" download>Download Game</a>
+									
+									<h3 class="major">Code</h3>
+									<article>
+										<pre>
+											<code>
+												public void Initialize(float _rotation,float _gap, float _thickness = ConstantValues.DISC_THICKNESS,float _radius = ConstantValues.DISC_RADIUS,int _polyCount= ConstantValues.DISC_POLY_COUNT)
+												{
+													initialAngle = _rotation;
+													currentAngle = initialAngle;
+													totalAngle = 360 - _gap;
+													thickness = _thickness;
+													length = _radius;
+													detail = _polyCount;
+													
+													//create mesh data
+													m = new Mesh();
+													GetComponent<MeshFilter>().mesh = m;
+													//Generate Mesh
+													StartGen();
+													UpdateMesh();
+												}
+												void Start()
+												{
+													if (thickness <= 0)
+													{
+														thickness = ConstantValues.DISC_THICKNESS;
+													}
+													
+													 
+													
+												}
+												void StartGen()//creates the disc
+												{
+													//top face
+													currentAngle = 0;
+													anglePerPoly = totalAngle / detail;
+													vertices = new Vector3[detail*2+1+1+1+1];
+													uv = new Vector2[vertices.Length];
+											
+													polys = new int[((detail * 3)*4 + (4 * 3*2))];
+													vertices[0] = Vector2.zero;
+													int vIndex = 1;
+													int pIndex = 0;
+													for (int i = 0; i <= detail; i++)//for every triangle in the arc, loop around the angle till the final angle, the higher the detail variable, the higher the poly count, the smoother the circle
+													{
+														Vector3 vertex = Vector3.zero + GetVectorFromAngle(currentAngle) * length;
+														vertices[vIndex] = vertex;
+														if (i > 0)
+														{
+															polys[pIndex] = 0;
+															polys[pIndex + 1] = vIndex - 1;
+															polys[pIndex + 2] = vIndex;
+															pIndex += 3;
+														}
+														vIndex++;
+														currentAngle -= anglePerPoly;
+													}
+													//bottom face
+													vertices[detail + 2] = new Vector3(vertices[0].x, vertices[0].y - thickness, vertices[0].z);
+													vIndex = detail +3;
+													pIndex = 0;
+													currentAngle = 180;
+													int[] temp= new int[polys.Length/4];
+													for (int i = 0; i <= detail; i++)//for every triangle in the arc, loop around the angle till the final angle, the higher the detail variable, the higher the poly count, the smoother the circle
+													{
+														Vector3 vertex = Vector3.zero + GetVectorFromAngle(currentAngle+180) * length;
+														vertices[vIndex] = vertex + Vector3.down * thickness;
+											
+														if (i > 0)
+														{
+															temp[pIndex] = detail + 2;
+															temp[pIndex + 1] = vIndex - 1;
+															temp[pIndex + 2] = vIndex;
+															pIndex += 3;
+															
+														}
+											
+														
+														vIndex++;
+														
+														currentAngle -= anglePerPoly;
+													}
+													temp.Reverse().ToArray().CopyTo(polys, polys.Length / 4); // invert the face
+													//middle
+													vIndex = 1;
+													pIndex = 0;
+													temp = new int[(detail*3)*2+(4*3)];
+													for(int i = 0; i <= detail; i++)
+													{
+													   
+														if (i > 0)
+														{
+															temp[pIndex] = vIndex - 1+1;
+															temp[pIndex + 1] = vIndex + detail + 1;
+															temp[pIndex + 2] = vIndex + detail + 1 + 1;
+											
+															temp[pIndex + 3] = vIndex ;
+															temp[pIndex + 4] = vIndex - 1 ;
+															temp[pIndex + 5] = vIndex + detail + 1 ;
+											
+															
+															
+											
+															pIndex += 6;
+														}
+														
+														
+														vIndex++;
+													}
+													//manually set origin sides
+													temp[pIndex] = detail * 2 + 3;
+													temp[pIndex +1] = detail + 2; 
+													temp[pIndex+2] = 0;
+											
+													temp[pIndex + 3] = 0;
+													temp[pIndex + 4] = detail+1;
+													temp[pIndex + 5] = detail*2+3;
+											
+													temp[pIndex+6] = detail  + 3;
+													temp[pIndex + 7] = 1;
+													temp[pIndex +8] = 0;
+											
+													temp[pIndex + 11] = detail + 3;
+													temp[pIndex + 10] = detail+2;
+													temp[pIndex + 9] = 0; 
+											
+													temp.CopyTo(polys, polys.Length / 2);
+											</code>
+										</pre>
+										  <p>Disc Renderer script. Creates a custom mesh for an Arc disk that you can fill into any degree number and size.</p>
+									</article>
+									<article>
+										<pre>
+											<code>
+												public class LevelGenerator : MonoBehaviour//singleton,holds the data of the levels, im making the first 3 levels of the game, which are all preprogrammed and hard coded.
+												{
+													int level = 0;
+													[SerializeField] List<LevelData> levels;
+													public event Action<List<LevelData>> OnSave;
+													public event Action OnLoad;
+													public event Action<int> OnLevelUp;
+													public event Action OnGameEnd;
+													DiscSpawner ds;
+													public static LevelGenerator LG = null;
+													private void Awake()//initiates singleton
+													{
+														if (LG == null)
+														{
+												
+															LG = this;
+															DontDestroyOnLoad(this);
+														}
+														else
+														{
+															Destroy(gameObject);
+														}
+													}
+													private void Start()
+													{
+														GameScript.GS.OnStart += Initiate;
+														GameScript.GS.OnWin += NextLevel;
+														GameScript.GS.OnDeath += RestartLevel;
+														OnGameEnd += GameScript.GS.OnGameEnd;
+												
+														OnGameEnd += GameScript.GS.OnGameEnd;
+													   // GameScript.GS.OnWin += CheckLevel;
+													}
+													void RestartLevel()
+													{
+														ds.SpawnLevel(levels[level - 1]);
+														OnLevelUp?.Invoke(level);
+													}
+													void Initiate()
+													{
+														levels = new List<LevelData>();
+														ds = GetComponent<DiscSpawner>();
+														Load();
+														print(levels.Count);
+														if (levels.Count == 0)
+														{
+												
+															CreateLevelData();
+															Save();
+														}
+												
+												
+														NextLevel();
+													}
+											</code>
+										</pre>
+										  <p>Part of the level generator class that grabs the level data from the level stores class that holds the data for all the files where the levels are stored</p>
+									</article>
+									<article>
+										<pre>
+											<code>
+												public class LevelData //hold the data for a all the discs in a level
+												{
+													public List<Disc> discArray;
+													public Color color;
+													public LevelData(List<Disc> _newDiscs,Color _c)
+													{
+														SetDiscs(_newDiscs);
+														SetColor(_c);
+													}
+													#region discs   
+													public List<Disc> GetDiscs()
+													{
+														return discArray;
+													}
+													public void SetDiscs(List<Disc> _newDiscs)
+													{
+														discArray = _newDiscs;
+													}
+													public void AddDiscs(List<Disc> _newDiscs)
+													{
+														discArray.AddRange(_newDiscs);
+														
+													}
+													public void AddDisc(Disc _newDisc)
+													{
+														discArray.Add(_newDisc);
+												
+													}
+													#endregion
+													#region color
+													public Color GetColor()
+													{
+														return color;
+													}
+													public void SetColor(Color _c)
+													{
+														color = _c;
+													}
+													#endregion
+												}
+												
+											</code>
+										</pre>
+										  <p>LevelData class that holds the data for the level. It stores Discs which are also a class that hold data. the level stores class filters the leveldatas to JSON where they get saved on disk</p>
+									</article>
+									
+								</div>
+							</div>
+
+					</section>
+
+				<!-- Footer -->
+					
+			</div>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+			<script src="../assets/js/Project.js"></script>
+
+	</body>
+</html>
